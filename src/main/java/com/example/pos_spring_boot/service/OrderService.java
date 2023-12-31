@@ -1,5 +1,6 @@
 package com.example.pos_spring_boot.service;
 
+import com.example.pos_spring_boot.dto.CustomerDTO;
 import com.example.pos_spring_boot.dto.ItemDTO;
 import com.example.pos_spring_boot.dto.OrderDTO;
 import com.example.pos_spring_boot.entity.Customer;
@@ -30,7 +31,25 @@ OrderService {
 
     public OrderDTO getOrder(String id) {
         Optional<Order_t> order_t = orderRepo.findById(id);
-        return modelMapper.map(order_t.get() , OrderDTO.class);
+        OrderDTO orderDTO = modelMapper.map(order_t.get(), OrderDTO.class);
+
+        List<ItemDTO> items = new ArrayList<>();
+        for (OrderItem orderItem : order_t.get().getOrderItems()) {
+            Item item = orderItem.getItem();
+            items.add(
+                    new ItemDTO(
+                            item.getICode() ,
+                            item.getIName() ,
+                            item.getIPrice() ,
+                            orderItem.getQty()
+                    )
+            );
+        }
+
+        orderDTO.setItems(items);
+        orderDTO.setCustomerDTO(modelMapper.map(order_t.get().getCustomer() , CustomerDTO.class));
+
+        return orderDTO;
 
     }
 
