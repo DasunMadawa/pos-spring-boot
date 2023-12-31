@@ -49,7 +49,7 @@ public class OrderController {
             if (isPlaced) {
                 responseDTO.setCode(HttpServletResponse.SC_OK);
                 responseDTO.setMessage("Success");
-                responseDTO.setContent(null);
+                responseDTO.setContent(orderDTO);
 
                 return new ResponseEntity(responseDTO, HttpStatus.OK);
             } else {
