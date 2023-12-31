@@ -10,20 +10,20 @@ public class OrderDTO {
     private int oDiscount;
     private double oBalance;
 
-    private List<OrderItemDTO> orderItemDTOList;
+    private List<ItemDTO> Items;
     private CustomerDTO customerDTO;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(String oId, String oDate, double oTotal, double oSubTotal, int oDiscount, double oBalance, List<OrderItemDTO> orderItemDTOList, CustomerDTO customerDTO) {
+    public OrderDTO(String oId, String oDate, double oTotal, double oSubTotal, int oDiscount, double oBalance, List<ItemDTO> items, CustomerDTO customerDTO) {
         this.oId = oId;
         this.oDate = oDate;
         this.oTotal = oTotal;
         this.oSubTotal = oSubTotal;
         this.oDiscount = oDiscount;
         this.oBalance = oBalance;
-        this.orderItemDTOList = orderItemDTOList;
+        Items = items;
         this.customerDTO = customerDTO;
     }
 
@@ -75,12 +75,12 @@ public class OrderDTO {
         this.oBalance = oBalance;
     }
 
-    public List<OrderItemDTO> getOrderItemDTOList() {
-        return orderItemDTOList;
+    public List<ItemDTO> getItems() {
+        return Items;
     }
 
-    public void setOrderItemDTOList(List<OrderItemDTO> orderItemDTOList) {
-        this.orderItemDTOList = orderItemDTOList;
+    public void setItems(List<ItemDTO> items) {
+        Items = items;
     }
 
     public CustomerDTO getCustomerDTO() {

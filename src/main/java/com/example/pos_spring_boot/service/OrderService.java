@@ -2,7 +2,8 @@ package com.example.pos_spring_boot.service;
 
 import com.example.pos_spring_boot.dto.ItemDTO;
 import com.example.pos_spring_boot.dto.OrderDTO;
-import com.example.pos_spring_boot.dto.OrderItemDTO;
+import com.example.pos_spring_boot.entity.Customer;
+import com.example.pos_spring_boot.entity.Item;
 import com.example.pos_spring_boot.entity.OrderItem;
 import com.example.pos_spring_boot.entity.Order_t;
 import com.example.pos_spring_boot.repo.OrderRepo;
@@ -38,11 +39,10 @@ OrderService {
             throw new Exception();
         }
 
-        for (OrderItemDTO orderItemDTO : orderDTO.getOrderItemDTOList()) {
-            ItemDTO itemDTO = orderItemDTO.getItemDTO();
+        for (ItemDTO itemDTO : orderDTO.getItems()) {
             ItemDTO tempItem = itemService.searchItem(itemDTO.getiCode());
 
-            tempItem.setiQty(tempItem.getiQty() - orderItemDTO.getQty());
+            tempItem.setiQty(tempItem.getiQty() - itemDTO.getiQty());
 
             if (tempItem.getiQty() < 0) {
                 throw new Exception();
@@ -52,13 +52,15 @@ OrderService {
 
         }
         Order_t order_t = modelMapper.map(orderDTO, Order_t.class);
-        order_t.setOrderItems(modelMapper.map(orderDTO.getOrderItemDTOList() , new TypeToken<ArrayList<OrderItem>>() {}.getType()));
-        System.out.println(order_t.getOrderItems());
-//        int i = 0;
-//        for (OrderItem orderItem : orderItems) {
-//            orderItem.setOrder_t(order_t);
-//            System.out.println(i++);
-//        }
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (ItemDTO itemDTO : orderDTO.getItems()) {
+            orderItems.add(
+                    new OrderItem(order_t , modelMapper.map(itemDTO , Item.class ) , itemDTO.getiQty())
+            );
+        }
+
+        order_t.setOrderItems(orderItems);
 
         orderRepo.save(order_t);
         return true;

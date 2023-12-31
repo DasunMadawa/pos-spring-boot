@@ -1,15 +1,14 @@
 package com.example.pos_spring_boot.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@ToString
+//@Data
+//@ToString
+@Getter
+@Setter
 @Entity
 @Table(name = "order_items")
 @IdClass(OrderItemsID.class)
